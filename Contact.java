@@ -115,14 +115,20 @@ public class Contact {
   
   public void setFirstName(String first) {
     this.name[0] = first;
+    this.name[3] = this.name[0] + " " + this.name[1] + " "
+		   + this.name[2];
   }
   
   public void setMiddleName(String middle) {
     this.name[1] = middle;
+    this.name[3] = this.name[0] + " " + this.name[1] + " "
+		   + this.name[2];
   }
   
   public void setLastName(String last) {
     this.name[2] = last;
+    this.name[3] = this.name[0] + " " + this.name[1] + " "
+		   + this.name[2];
   }
   
   public void setEmail(String email) {
