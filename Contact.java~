@@ -157,7 +157,7 @@ public class Contact {
     Contact davidLeeSmith1 = new Contact();
     Contact davidLeeSmith2 = new Contact(nameArray, email);
     Contact davidLeeSmith3 = new Contact(first, middle, last, email);
-    Contact davidLeeSmith4 = new Contact(first, last, email);
+    Contact davidLeeSmtih4 = new Contact(first, last, email);
     System.out.println("davidLeeSmith1:");
     System.out.println("Name: " + davidLeeSmith1.getFullName());
     System.out.println("First: " + davidLeeSmith1.getFirstName());
