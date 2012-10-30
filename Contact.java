@@ -135,6 +135,11 @@ public class Contact {
     this.email = email;
   }
   
+  //Other functions
+  public String toString() {
+    return this.name[3] + " " + this.email + "";
+  }
+  
   /**************************************************
   *Test main                                        *
   *NOTE: THIS SHOULD NOT BE RUN EXCEPT FOR DEBUGGING*
@@ -152,31 +157,35 @@ public class Contact {
     Contact davidLeeSmith1 = new Contact();
     Contact davidLeeSmith2 = new Contact(nameArray, email);
     Contact davidLeeSmith3 = new Contact(first, middle, last, email);
-    Contact davidLeeSmtih4 = new Contact(first, last, email);
+    Contact davidLeeSmith4 = new Contact(first, last, email);
     System.out.println("davidLeeSmith1:");
     System.out.println("Name: " + davidLeeSmith1.getFullName());
     System.out.println("First: " + davidLeeSmith1.getFirstName());
     System.out.println("Middle: " + davidLeeSmith1.getMiddleName());
     System.out.println("Last: " + davidLeeSmith1.getLastName());
     System.out.println("Email: " + davidLeeSmith1.getEmail());
+    System.out.println("toString: " + davidLeeSmith1.toString());
     System.out.println("davidLeeSmith2:");
     System.out.println("Name: " + davidLeeSmith2.getFullName());
     System.out.println("First: " + davidLeeSmith2.getFirstName());
     System.out.println("Middle: " + davidLeeSmith2.getMiddleName());
     System.out.println("Last: " + davidLeeSmith2.getLastName());
     System.out.println("Email: " + davidLeeSmith2.getEmail());
+    System.out.println("toString: " + davidLeeSmith2.toString());
     System.out.println("davidLeeSmith3:");
     System.out.println("Name: " + davidLeeSmith3.getFullName());
     System.out.println("First: " + davidLeeSmith3.getFirstName());
     System.out.println("Middle: " + davidLeeSmith3.getMiddleName());
     System.out.println("Last: " + davidLeeSmith3.getLastName());
-    System.out.println("Email: " + davidLeeSmith3.getEmail());    
-    System.out.println("davidLeeSmith4:");
-    System.out.println("Name: " + davidLeeSmith3.getFullName());
-    System.out.println("First: " + davidLeeSmith3.getFirstName());
-    System.out.println("Middle: " + davidLeeSmith3.getMiddleName());
-    System.out.println("Last: " + davidLeeSmith3.getLastName());
     System.out.println("Email: " + davidLeeSmith3.getEmail());
+    System.out.println("toString: " + davidLeeSmith3.toString());
+    System.out.println("davidLeeSmith4:");
+    System.out.println("Name: " + davidLeeSmith4.getFullName());
+    System.out.println("First: " + davidLeeSmith4.getFirstName());
+    System.out.println("Middle: " + davidLeeSmith4.getMiddleName());
+    System.out.println("Last: " + davidLeeSmith4.getLastName());
+    System.out.println("Email: " + davidLeeSmith4.getEmail());
+    System.out.println("toString: " + davidLeeSmith4.toString());
   }
   
 }
