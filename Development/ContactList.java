@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.*;
 
 public class ContactList
 {
@@ -17,28 +18,45 @@ public class ContactList
 		writer.close();
 	}
 	
-	public Boolean modify(Contact contact)
+	public Boolean modify(Contact oldInfo, Contact changedInfo)
 	{		
 		while (scan.hasNextLine())
 		{
-			if (scan.nextLine() == contact.toString())
+			String temp = scan.nextLine();
+			if (temp == oldInfo.toString())
 			{
-				//scan.next
+				temp = changedInfo.toString();
 				return true;
 			}
 		}
 		
-		return false;
+		// Since writer was instantiated in the Constructor
+		// it needs to be closed
+		writer.close();
 		
+		return false;
 	}
 	
 	public Boolean remove(Contact contact)
 	{
-		
+		String temp = scan.nextLine();
+		while(scan.hasNextLine())
+		{
+			if (temp == contact.toString())
+			{
+				temp = "";
+			}
+		}
 	}
 	
 	public String toString()
 	{
-	
+		String list;
+		while (scan.hasNextLine())
+		{
+			list += scan.nextLine();
+		}
+		
+		return list;
 	}
 }
