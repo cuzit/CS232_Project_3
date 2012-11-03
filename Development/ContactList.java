@@ -5,47 +5,37 @@ public class ContactList
 {
 	Scanner scan;
 	FileWriter writer;
+	File contacts;
 	
 	public ContactList()
 	{
-		
 		try
 		{
+			contacts = new File("contacts.txt");
+			if (!contacts.exists())
+			{
+				contacts.createNewFile();
+			}
+			
 			scan = new Scanner(new File("contacts.txt"));
 			writer = new FileWriter(new File("contacts.txt"), true);
 		}
 		
-		catch(FileNotFoundException fnfException)
+		catch (FileNotFoundException fnfException)
 		{
-			System.out.println("FileNotFoundException: " + fnfException.getMessage());
+			System.out.println("The file contacts.txt could not be found.");
 		}
 		
 		catch (IOException ioe)
 		{
-			System.out.println("IOException: " + ioe.getMessage());
+			System.out.println("IOException: The file could not be created.");
 		}
 	}
 	
 	public Boolean add(Contact contact)
 	{
-		try
-		{
-			writer.write(contact.getFullName() + " " + contact.getEmail() + "\n");
-			writer.close();
-			return true;
-		}
-		
-		catch(FileNotFoundException fnfException)
-		{
-			System.out.println("FileNotFoundException: " + fnfException.getMessage());
-			return false;
-		}
-		
-		catch (IOException ioe)
-		{
-			System.out.println("IOException: " + ioe.getMessage());
-			return false;
-		}
+		writer.write(contact.getFullName() + " " + contact.getEmail() + "\n");
+		writer.close();
 	}
 	
 	public Boolean modify(Contact oldInfo, Contact changedInfo)
@@ -62,20 +52,7 @@ public class ContactList
 		
 		// Since writer was instantiated in the Constructor
 		// it needs to be closed
-		try
-		{
-			writer.close();
-		}
-		
-		catch(FileNotFoundException fnfException)
-		{
-			System.out.println("FileNotFoundException: " + fnfException.getMessage());
-		}
-		
-		catch (IOException ioe)
-		{
-			System.out.println("IOException: " + ioe.getMessage());
-		}
+		writer.close();
 		
 		return false;
 	}
@@ -88,19 +65,16 @@ public class ContactList
 			if (temp == contact.toString())
 			{
 				temp = "";
-				return true;
 			}
 		}
-		
-		return false;
 	}
 	
 	public String toString()
 	{
-		String list = "";
+		String list;
 		while (scan.hasNextLine())
 		{
-			list += scan.nextLine() + "\n";
+			list += scan.nextLine();
 		}
 		
 		return list;
