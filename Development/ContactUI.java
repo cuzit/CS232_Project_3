@@ -21,7 +21,7 @@ import java.util.Scanner;
             private String email;
 			private DefaultListModel listModel;
 			private Scanner scan;
-			private ContactList contact;
+			private ContactList contactList;
             
             public ContactUI()
             {
@@ -34,16 +34,16 @@ import java.util.Scanner;
 				scrollPane = new JScrollPane();
 				listModel = new DefaultListModel();
 				
-				
-				scan = new Scanner(contact.toString());
+				String contact = contactList.toString();
+				scan = new Scanner(contact);
 				
 				while (scan.hasNextLine())
 				{
 					String temp = scan.nextLine();
-					list.add(scan.nextLine());
+					listModel.addElement(scan.nextLine());
 				}
 				
-				listview = new JList(list);
+				listview = new JList(listModel);
 				
 				scrollPane.setPreferredSize(new Dimension(300, 200));
 				
