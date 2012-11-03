@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.*;
+import javax.swing.*;
 
 public class ContactList
 {
@@ -32,11 +33,11 @@ public class ContactList
 		}
 	}
 	
-	public Boolean add(Contact contact)
+	public Boolean add(String name, String email)
 	{
 		try
 		{
-			writer.write(contact.getFullName() + " " + contact.getEmail() + "\n");
+			writer.write(name + " " + email + "\n");
 			writer.close();
 			
 			return true;
@@ -44,21 +45,29 @@ public class ContactList
 		
 		catch (IOException ioe)
 		{
+			JOptionPane.showMessageDialog(null, "The contact could not be added.\nPlease try again.", "Error", 0);
 			System.out.println("The contact could not be added. Please try again.");
 			
 			return false;
 		}
 	}
 	
-	public Boolean modify(Contact oldInfo, Contact changedInfo)
+	public Boolean modify(String oldInfo, String changedInfo)
 	{		
+		String output = "";
+		
 		while (scan.hasNextLine())
 		{
+			
 			String temp = scan.nextLine();
-			if (temp == oldInfo.toString())
+			if (temp == oldInfo)
 			{
-				temp = changedInfo.toString();
-				return true;
+				output += changedInfo + "\n";
+			}
+			
+			else
+			{
+				output += temp + "\n";
 			}
 		}
 		
@@ -66,30 +75,52 @@ public class ContactList
 		// it needs to be closed
 		try
 		{
+			writer.write(output);
 			writer.close();
 		}
 		
 		catch (IOException ioe)
 		{
-			System.out.println("The contact could not be added. Please try again.");
+			JOptionPane.showMessageDialog(null, "The contact could not be modified.\nPlease try again.", "Error", 0);
+			System.out.println("The contact could not be modified. Please try again.");
+			return false;
 		}
 			
-		return false;
+		return true;
 	}
 	
-	public Boolean remove(Contact contact)
+	public Boolean remove(String name, String email)
 	{
-		String temp = scan.nextLine();
+		String output = "";
 		while(scan.hasNextLine())
 		{
-			if (temp == contact.toString())
+			String temp = scan.nextLine();
+			if (temp == name + " " + email)
 			{
-				temp = "";
-				return true;
+				output += "";
+				
+			}
+			
+			else
+			{
+				output += temp;
 			}
 		}
 		
-		return false;
+		try
+		{
+			writer.write(output);
+			writer.close();
+		}
+		
+		catch (IOException ioe)
+		{
+			JOptionPane.showMessageDialog(null, "The contact could not be removed.\nPlease try again.", "Error", 0);
+			System.out.println("The contact could not be removed. Please try again.");
+			return false;
+		}
+		
+		return true;
 	}
 	
 	public String toString()
