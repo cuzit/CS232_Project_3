@@ -34,8 +34,20 @@ public class ContactList
 	
 	public Boolean add(Contact contact)
 	{
-		writer.write(contact.getFullName() + " " + contact.getEmail() + "\n");
-		writer.close();
+		try
+		{
+			writer.write(contact.getFullName() + " " + contact.getEmail() + "\n");
+			writer.close();
+			
+			return true;
+		}
+		
+		catch (IOException ioe)
+		{
+			System.out.println("The contact could not be added. Please try again.");
+			
+			return false;
+		}
 	}
 	
 	public Boolean modify(Contact oldInfo, Contact changedInfo)
@@ -52,8 +64,16 @@ public class ContactList
 		
 		// Since writer was instantiated in the Constructor
 		// it needs to be closed
-		writer.close();
+		try
+		{
+			writer.close();
+		}
 		
+		catch (IOException ioe)
+		{
+			System.out.println("The contact could not be added. Please try again.");
+		}
+			
 		return false;
 	}
 	
@@ -65,13 +85,16 @@ public class ContactList
 			if (temp == contact.toString())
 			{
 				temp = "";
+				return true;
 			}
 		}
+		
+		return false;
 	}
 	
 	public String toString()
 	{
-		String list;
+		String list = "";
 		while (scan.hasNextLine())
 		{
 			list += scan.nextLine();
