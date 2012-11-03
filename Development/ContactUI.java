@@ -32,12 +32,14 @@ import java.util.Scanner;
 				userInputPanel = new JPanel();
 				closeBtnPanel = new JPanel();
 				scrollPane = new JScrollPane();
+				listModel = new DefaultListModel();
 				
-				ArrayList<String> list = new ArrayList<String>();
+				
 				scan = new Scanner(contact.toString());
 				
 				while (scan.hasNextLine())
 				{
+					String temp = scan.nextLine();
 					list.add(scan.nextLine());
 				}
 				
