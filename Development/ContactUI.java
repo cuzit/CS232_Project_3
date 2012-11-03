@@ -25,6 +25,7 @@ import java.util.Scanner;
             
             public ContactUI()
             {
+				contactList = new ContactList();
 				contactPanel = new JPanel();
 				contactListPanel = new JPanel();
 				buttonListPanel = new JPanel();
@@ -34,16 +35,19 @@ import java.util.Scanner;
 				scrollPane = new JScrollPane();
 				listModel = new DefaultListModel();
 				
-				String contact = contactList.toString();
-				scan = new Scanner(contact);
-				
-				while (scan.hasNextLine())
+				if (contactList.toString() != null)
 				{
-					String temp = scan.nextLine();
-					listModel.addElement(scan.nextLine());
+					String contact = contactList.toString();
+					scan = new Scanner(contact);
+					
+					while (scan.hasNextLine())
+					{
+						String temp = scan.nextLine();
+						listModel.addElement(temp);
+					}
+					
+					listview = new JList(listModel);
 				}
-				
-				listview = new JList(listModel);
 				
 				scrollPane.setPreferredSize(new Dimension(300, 200));
 				
@@ -51,28 +55,33 @@ import java.util.Scanner;
 				label = new JLabel[2];
 				userInput = new JTextField[2];
 				
+				// Instantiate all of the JButtons
 				for (int i = 0; i < button.length; i++)
 				{
 					button[i] = new JButton();
 					button[i].addActionListener(this);
 				}
 				
+				// Instantiate all of the JLabels
 				for (int j = 0; j < label.length; j++)
 				{
 					label[j] = new JLabel();
 				}
 				
+				// Instantiate all of the JTextFields
 				for (int k = 0; k < userInput.length; k++)
 				{
 					userInput[k] = new JTextField(20);
 				}
               
+				// Set the text for all of the JButtons
 				button[0].setText("Add");
 				button[1].setText("Delete");
 				button[2].setText("Save");
 				button[3].setText("OK");
 				button[4].setText("Cancel");
 				
+				// Set the text for all of the JLables
 				label[0].setText("Name:");
 				label[1].setText("Email:");
 				
