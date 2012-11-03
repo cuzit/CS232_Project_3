@@ -86,14 +86,19 @@ public class EmailSender extends JFrame implements ActionListener {
   ****************/
   public void actionPerformed(ActionEvent event) {
     if (event.getSource() == send) {
-      Credentials credWindow = new Credentials();
+      JFrame credWindow = new JFrame();
+      Credentials credPanel = new Credentials(new Credentials.OnContactListener() {
+	public void onData(String s) {
+	}
+	
+      });
+      credWindow.add(credPanel);
       credWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       credWindow.setTitle("Enter Credentials");
       credWindow.setPreferredSize(new Dimension(300, 200));
       credWindow.pack();
       credWindow.setVisible(true);
-      username = credWindow.getUsername();
-      password = credWindow.getPassword();
+      
     }
     
     else if (event.getSource() == clear) {
@@ -105,20 +110,17 @@ public class EmailSender extends JFrame implements ActionListener {
     }
     
     else if (event.getSource() == to) {
-		JFrame contactWindow = new JFrame();
-		ContactUI contactPanel = new ContactUI(new ContactUI.OnContactListener()
-		{
-			public void onData(String s)
-			{
-
-			}
-		});
-		 
-		contactWindow.add(contactPanel);
-		contactWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		contactWindow.setTitle("Contact List");
-		contactWindow.pack();
-		contactWindow.setVisible(true);
+      JFrame contactWindow = new JFrame();
+      ContactUI contactPanel = new ContactUI(new ContactUI.OnContactListener()
+      {
+	public void onData(String s){
+	}
+      });
+      contactWindow.add(contactPanel);
+      contactWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      contactWindow.setTitle("Contact List");
+      contactWindow.pack();
+      contactWindow.setVisible(true);
     }
     
     else {

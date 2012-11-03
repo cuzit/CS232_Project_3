@@ -14,14 +14,18 @@ public class Credentials extends JFrame implements ActionListener {
   private JLabel instructions;
   private JTextField userBox;
   private JTextField passBox;
-  String username;
-  String password;
+  private String username;
+  private String password;
+  private boolean complete;
+  private OnContactListener listener;
+  private String creds;
   
   /************
   *Constructor*
   *************/
-  public Credentials() {
+  public Credentials(OnContactListener l) {
     //Initialize components
+    listener = l;
     username = ""; password = "";
     ok = new JButton("OK");
     ok.addActionListener(this);
@@ -32,6 +36,7 @@ public class Credentials extends JFrame implements ActionListener {
     instructions = new JLabel("Please enter your GMail credentials:");
     userBox = new JTextField(20);
     passBox = new JTextField(20);
+    complete = false;
     
     //Set up username area
     JPanel userArea = new JPanel(new GridLayout(2, 1));
@@ -58,6 +63,13 @@ public class Credentials extends JFrame implements ActionListener {
     add(buttonArea);
   }
   
+  /******************
+  *OnContactListener*
+  *******************/
+  public interface OnContactListener {
+    public void onData(String s);
+  }
+  
   /***************
   *ActionListener*
   ****************/
@@ -78,6 +90,9 @@ public class Credentials extends JFrame implements ActionListener {
       else {
 	username = userBox.getText();
 	password = passBox.getText();
+	creds = username + " " + password;
+	complete = true;
+	listener.onData(creds);
 	dispose();
       }
     }
@@ -100,5 +115,9 @@ public class Credentials extends JFrame implements ActionListener {
   
   public String getPassword() {
     return password;
+  }
+  
+  public boolean getComplete() {
+    return complete;
   }
 }
