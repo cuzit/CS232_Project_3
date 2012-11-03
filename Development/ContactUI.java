@@ -6,12 +6,7 @@ import java.util.Scanner;
         public class ContactUI extends JPanel implements ActionListener
         {
             // Declare all of the variables
-			private JPanel contactListPanel;
-			private JPanel buttonListPanel;
-			private JPanel inputPanel;
-			private JPanel userInputPanel;
-			private JPanel contactPanel;
-			private JPanel closeBtnPanel;
+			private JPanel[] panel;
 			private JScrollPane scrollPane;
 			private JList listview;
 			private JButton[] button;
@@ -26,12 +21,7 @@ import java.util.Scanner;
             public ContactUI()
             {
 				contactList = new ContactList();
-				contactPanel = new JPanel();
-				contactListPanel = new JPanel();
-				buttonListPanel = new JPanel();
-				inputPanel = new JPanel();
-				userInputPanel = new JPanel();
-				closeBtnPanel = new JPanel();
+				panel = new JPanel[6];
 				scrollPane = new JScrollPane();
 				listModel = new DefaultListModel();
 				
@@ -55,23 +45,29 @@ import java.util.Scanner;
 				label = new JLabel[2];
 				userInput = new JTextField[2];
 				
-				// Instantiate all of the JButtons
-				for (int i = 0; i < button.length; i++)
+				// Instantiate all of the JPanels
+				for (int i = 0; i < panel.length; i++)
 				{
-					button[i] = new JButton();
-					button[i].addActionListener(this);
+					panel[i] = new JPanel();
+				}
+				
+				// Instantiate all of the JButtons
+				for (int j = 0; j < button.length; j++)
+				{
+					button[j] = new JButton();
+					button[j].addActionListener(this);
 				}
 				
 				// Instantiate all of the JLabels
-				for (int j = 0; j < label.length; j++)
+				for (int k = 0; k < label.length; k++)
 				{
-					label[j] = new JLabel();
+					label[k] = new JLabel();
 				}
 				
 				// Instantiate all of the JTextFields
-				for (int k = 0; k < userInput.length; k++)
+				for (int l = 0; l < userInput.length; l++)
 				{
-					userInput[k] = new JTextField(20);
+					userInput[l] = new JTextField(20);
 				}
               
 				// Set the text for all of the JButtons
@@ -85,60 +81,78 @@ import java.util.Scanner;
 				label[0].setText("Name:");
 				label[1].setText("Email:");
 				
-				contactPanel.setLayout(new BorderLayout());
-				contactPanel.add(buttonListPanel, BorderLayout.NORTH);
-				contactPanel.add(contactListPanel, BorderLayout.CENTER);
+				panel[0].setLayout(new BorderLayout());
+				panel[0].add(panel[1], BorderLayout.NORTH);
+				panel[0].add(panel[2], BorderLayout.CENTER);
 				
-				buttonListPanel.setLayout(new FlowLayout());
-				buttonListPanel.add(button[0]);
-				buttonListPanel.add(button[1]);
-				buttonListPanel.add(button[2]);
+				panel[1].setLayout(new FlowLayout());
+				panel[1].add(button[0]);
+				panel[1].add(button[1]);
+				panel[1].add(button[2]);
 				
-				contactListPanel.setLayout(new BorderLayout());
-				contactListPanel.add(buttonListPanel, BorderLayout.NORTH);
-				contactListPanel.add(scrollPane, BorderLayout.CENTER);
+				panel[2].setLayout(new BorderLayout());
+				//contactListPanel.add(panel[1], BorderLayout.NORTH);
+				panel[2].add(scrollPane, BorderLayout.CENTER);
 
 				scrollPane.add(listview);
 				
-				userInputPanel.setLayout(new GridLayout(6, 1));
-				userInputPanel.add(label[0]);
-				userInputPanel.add(userInput[0]);
-				userInputPanel.add(label[1]);
-				userInputPanel.add(userInput[1]);
+				panel[4].setLayout(new GridLayout(6, 1));
+				panel[4].add(label[0]);
+				panel[4].add(userInput[0]);
+				panel[4].add(label[1]);
+				panel[4].add(userInput[1]);
 				
-				inputPanel.setLayout(new BorderLayout());
-				inputPanel.add(userInputPanel, BorderLayout.NORTH);
-				inputPanel.add(closeBtnPanel, BorderLayout.CENTER);
+				panel[3].setLayout(new BorderLayout());
+				panel[3].add(panel[4], BorderLayout.NORTH);
+				panel[3].add(panel[5], BorderLayout.CENTER);
 				
-				closeBtnPanel.add(button[3]);
-				closeBtnPanel.add(button[4]);
+				panel[5].add(button[3]);
+				panel[5].add(button[4]);
 				
-				add(contactPanel);
-				add(inputPanel);
+				add(panel[0]);
+				add(panel[3]);
             }
 			
 			public void actionPerformed(ActionEvent event)
 			{
+				// Add button
 				if (event.getSource() == button[0])
 				{
-				
+					contactList.add(userInput[0].getText(), userInput[1].getText());
+					listModel.addElement(userInput[0].getText() + " " + userInput[1].getText());
+					
+					// Reset the fields
+					userInput[0].setText("");
+					userInput[1].setText("");
 				}
 				
+				// Delete Button
 				else if (event.getSource() == button[1])
 				{
-				
+					contactList.remove(userInput[0].getText(), userInput[1].getText());
+					
+					// Reset the fields
+					userInput[0].setText("");
+					userInput[1].setText("");
 				}
 				
+				// Save Button
 				else if (event.getSource() == button[2])
 				{
-				
+					
+					
+					// Reset the fields
+					userInput[0].setText("");
+					userInput[1].setText("");
 				}
 				
+				// OK Button
 				else if (event.getSource() == button[3])
 				{
 				
 				}
 				
+				// Cancel Button
 				else if (event.getSource() == button[4])
 				{
 				
