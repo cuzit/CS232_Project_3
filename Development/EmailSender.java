@@ -226,7 +226,10 @@ public class EmailSender extends JFrame implements ActionListener {
 		if (toBox.getText().equals(""))
 	      toBox.setText(s);
 		else
-		  toBox.setText(toBox.getText() + ", " + s);
+			if (ccBox.getText().equals(""))
+				ccBox.setText(s);
+			else
+				ccBox.setText(toBox.getText() + ", " + s);
 	  }
 	}
       });
