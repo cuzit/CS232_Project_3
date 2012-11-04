@@ -1,7 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
 import javax.swing.*;
-import java.util.Scanner;
         
         public class ContactUI extends JPanel implements ActionListener
         {
@@ -14,9 +14,9 @@ import java.util.Scanner;
 			private JTextField[] userInput;
 			private String recipients;
 			private DefaultListModel listModel;
-			private Scanner scan;
 			private ContactList contactList;
 			private OnContactListener listener;
+			private Contact contact;
 			
             public interface OnContactListener
 			{
@@ -28,22 +28,21 @@ import java.util.Scanner;
 				listener = l;
 				contactList = new ContactList();
 				panel = new JPanel[6];
-				scrollPane = new JScrollPane();
 				listModel = new DefaultListModel();
 				
-				if (contactList.toString() != null)
+				List<String> data = contactList.getContacts();
+				
+				if (data.size() > 0)
 				{
-					String contact = contactList.toString();
-					scan = new Scanner(contact);
-					
-					while (scan.hasNextLine())
+					for (String singleContact : data)
 					{
-						String temp = scan.nextLine();
-						listModel.addElement(temp);
+						listModel.addElement(singleContact);
 					}
 					
 					listview = new JList(listModel);
 				}
+				
+				scrollPane = new JScrollPane(listview);
 				
 				scrollPane.setPreferredSize(new Dimension(300, 200));
 				
@@ -99,8 +98,6 @@ import java.util.Scanner;
 				panel[2].setLayout(new BorderLayout());
 				//contactListPanel.add(panel[1], BorderLayout.NORTH);
 				panel[2].add(scrollPane, BorderLayout.CENTER);
-
-				scrollPane.add(listview);
 				
 				panel[4].setLayout(new GridLayout(6, 1));
 				panel[4].add(label[0]);
@@ -124,7 +121,10 @@ import java.util.Scanner;
 				// Add button
 				if (event.getSource() == button[0])
 				{
-					contactList.add(userInput[0].getText(), userInput[1].getText());
+					String[] contactArr = userInput[0].getText().split("\\s+");
+					contact = new Contact(contactArr, userInput[1].getText());
+					System.out.println(contact.toString());
+					contactList.add(contact);
 					listModel.addElement(userInput[0].getText() + " " + userInput[1].getText());
 					
 					// Reset the fields

@@ -113,8 +113,8 @@ public class EmailSender extends JFrame implements ActionListener {
       JFrame contactWindow = new JFrame();
       ContactUI contactPanel = new ContactUI(new ContactUI.OnContactListener()
       {
-	public void onData(String s){
-	}
+		public void onData(String s){
+		}
       });
       contactWindow.add(contactPanel);
       contactWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
