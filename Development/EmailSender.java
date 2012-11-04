@@ -2,6 +2,7 @@ import java.io.*;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.Scanner;
 
 import javax.mail.*;
 import javax.mail.internet.*;
@@ -30,6 +31,12 @@ public class EmailSender extends JFrame implements ActionListener {
   
   //JTextAreas
   private JTextArea messageBox;
+  
+  //JScrollPane
+  private JScrollPane scroll;
+  
+  //PrintWriter
+  private PrintWriter draft;
   
   //Strings
   private String username;
@@ -60,6 +67,8 @@ public class EmailSender extends JFrame implements ActionListener {
     ccBox = new JTextField(300);
     
     messageBox = new JTextArea(300, 200);
+    
+    scroll = new JScrollPane();
 
     username = ""; password = "";
     
@@ -99,7 +108,7 @@ public class EmailSender extends JFrame implements ActionListener {
     JPanel messageArea = new JPanel(new GridLayout(2, 1));
     messageArea.add(message);
     messageArea.add(messageBox);
-    
+    scroll.add(messageArea);
     
     //Set up other buttons
     JPanel buttonArea = new JPanel();
@@ -128,19 +137,65 @@ public class EmailSender extends JFrame implements ActionListener {
 	//This code is executed when the frame is closed and a value for s is
 	//returned.
 	public void onData(String s) {
-	  System.out.println("s: " + s);
+	  //Split the credential string returned into an array where
+	  //creds[0] = username and creds[1] = password.
 	  String[] creds = s.split(" ");
-	  System.out.println("Username: " + creds[0]);
-	  System.out.println("Password: " + creds[1]);
+	  
+	  //Create a GmailSender object with the appropriate credentials.
 	  GmailSender gmail = new GmailSender(creds[0], creds[1]);
-	  gmail.sendMail(toBox.getText(), subjectBox.getText(), messageBox.getText());
-	  JOptionPane.showMessageDialog(null, "Email has been sent!");
+	  
+	  //Declare variables
+	  boolean sent;
+	  
+	  //Send the email to multiple recipients
+	  if(ccBox.getText() != "" && ccBox.getText() != null) {
+	    String[] ccContacts = ccBox.getText().split(", ");
+	    sent = gmail.sendMail(ccContacts, subjectBox.getText(),
+				  messageBox.getText());
+	  }
+	  
+	  //Send the email to one recipient
+	  else {
+	    sent = gmail.sendMail(toBox.getText(), subjectBox.getText(),
+				  messageBox.getText());
+	  }
+	  
+	  //For security reasons, clear the password
+	  password = "";
+	  
+	  //Inform the user that their email has been sent or failed to send
+	  if(sent) {
+	    JOptionPane.showMessageDialog(null, "Email has been sent!");
+	  }
+	  else {
+	    try {
+	      draft = new PrintWriter("output.txt");
+	      draft.println("From: " + fromBox.getText());
+	      draft.println("To: " + toBox.getText());
+	      draft.println("CC: " + ccBox.getText());
+	      draft.println("Subject: " + subjectBox.getText());
+	      draft.println("Message: " + messageBox.getText());
+	      draft.close();
+	      JOptionPane.showMessageDialog(null, "Message failed to send.",
+					  "Message draft has been saved as " +
+					  "draft.txt.", JOptionPane.ERROR_MESSAGE);
+	    }
+	    
+	    catch(FileNotFoundException e) {
+	      JOptionPane.showMessageDialog(null, "File not found!");
+	    }
+	  }
+	  
+	  //Clear the text boxes
 	  toBox.setText("");
 	  fromBox.setText("");
 	  subjectBox.setText("");
 	  messageBox.setText("");
+	  ccBox.setText("");
 	}
       });
+      
+      //Window settings
       credWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       credWindow.setTitle("Enter Credentials");
       credWindow.setPreferredSize(new Dimension(300, 200));
@@ -154,6 +209,7 @@ public class EmailSender extends JFrame implements ActionListener {
       fromBox.setText("");
       subjectBox.setText("");
       messageBox.setText("");
+      ccBox.setText("");
       JOptionPane.showMessageDialog(this, "Fields have been reset.");
     }
     
@@ -165,9 +221,11 @@ public class EmailSender extends JFrame implements ActionListener {
 	//This code is executed when the frame is closed and a value for s is
 	//returned.
 	public void onData(String s){
-	  //blah
+	  toBox.setText(s);
 	}
       });
+      
+      //Window settings
       contactWindow.add(contactPanel);
       contactWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       contactWindow.setTitle("Contact List");

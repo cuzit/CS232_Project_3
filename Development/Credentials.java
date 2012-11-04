@@ -2,6 +2,7 @@ import java.io.*;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.Arrays;
 
 public class Credentials extends JFrame implements ActionListener {
   /**********
@@ -18,11 +19,13 @@ public class Credentials extends JFrame implements ActionListener {
   
   //JTextFields
   private JTextField userBox;
-  private JTextField passBox;
+  
+  //JPasswordField
+  private JPasswordField passBox;
   
   //Strings
   private String username;
-  private String password;
+  private char[] password;
   private String creds;
   
   //OnContactListener
@@ -35,8 +38,6 @@ public class Credentials extends JFrame implements ActionListener {
   public Credentials(String defaultUsername, OnContactListener l) {
     //Initialize components
     listener = l;
-    
-    username = ""; password = "";
     
     ok = new JButton("OK");
     ok.addActionListener(this);
@@ -53,7 +54,8 @@ public class Credentials extends JFrame implements ActionListener {
     else {
       userBox = new JTextField(20);
     }
-    passBox = new JTextField(20);
+    
+    passBox = new JPasswordField(20);
     
     
     //Set up username area
@@ -99,28 +101,56 @@ public class Credentials extends JFrame implements ActionListener {
   ****************/
   public void actionPerformed(ActionEvent event) {
     //If user presses OK button
+    password = passBox.getPassword();
+    
+    //For checking if username is blank or not
+    boolean blankUser = false;
+    String user = userBox.getText();
+    if (user.length() == 0) {
+      blankUser = true;
+    }
+    
+    //For checking if password is blank or not
+    boolean blankPass = false;
+    if (password.length == 0) {
+      blankPass = true;
+    }
+    
     if (event.getSource() == ok) {
       //If both username and password fields are empty
-      if(userBox.getText() == "" && passBox.getText() == "") {
+      if(blankUser &&  blankPass) {
 	JOptionPane.showMessageDialog(this, "Username and password cannot be blank!");
       }
       
       //If username field is empty
-      else if(userBox.getText() == "") {
+      else if(blankUser) {
 	JOptionPane.showMessageDialog(this, "Username cannot be blank!");
       }
       
       //If password field is empty
-      else if(passBox.getText() == "") {
+      else if(blankPass) {
 	JOptionPane.showMessageDialog(this, "Password cannot be blank!");
       }
       
       //If there exists information for both the username and password fields
       else {
+	//Retrieve username and password the user entered.
 	username = userBox.getText();
-	password = passBox.getText();
-	creds = username + " " + password;
+	String temp = "";
+	for (int i = 0; i < password.length; i++) {
+	  temp += password[i];
+	}
+	creds = username + " " + temp;
+	
+	//Return the creds to the main.
 	listener.onData(creds);
+	
+	//Clear password for security
+	for (int i = 0; i < password.length; i++) {
+	  password[i] = ' ';
+	}
+	
+	//Destroy window
 	dispose();
       }
     }
