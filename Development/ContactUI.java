@@ -124,7 +124,7 @@ import java.util.Arrays;
 				panel[0].add(panel[4]);
 				add(panel[0]);
 
-				setTitle("Contact List");
+				setTitle("Address Book");
 				pack();
 				setVisible(true);
             }
@@ -207,6 +207,7 @@ import java.util.Arrays;
 				}
 			}
 			
+			// This takes the selection and puts into the JTextFields
 			private ListSelectionListener lsl = new ListSelectionListener()
 			{
 				@Override
