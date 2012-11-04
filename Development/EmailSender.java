@@ -216,14 +216,22 @@ public class EmailSender extends JFrame implements ActionListener {
     
     //If to is pressed
     else if (event.getSource() == to) {
-      JFrame contactWindow = new JFrame();
+      final JFrame contactWindow = new JFrame();
       ContactUI contactPanel = new ContactUI(new ContactUI.OnContactListener()
       {
 
 	//This code is executed when the frame is closed and a value for s is
 	//returned.
 	public void onData(String s){
-	  toBox.setText(s);
+	  if(s != null) {
+	    if(s == "Cancel was pressed") {
+	      contactWindow.dispose();
+	    }
+	    else {
+	      toBox.setText(s);
+	      contactWindow.dispose();
+	    }
+	  }
 	}
       });
       
