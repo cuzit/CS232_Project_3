@@ -216,30 +216,32 @@ public class EmailSender extends JFrame implements ActionListener {
     else if (event.getSource() == to) {
       ContactUI contactPanel = new ContactUI(new ContactUI.OnContactListener()
       {
-
-		//This code is executed when the frame is closed and a value for s is
-		//returned.
-		public void onData(String s){
-		  if(s != null) {
-			if (toBox.getText().equals("")) {
-			  toBox.setText(s);
-			}
-			else {
-				if (ccBox.getText().equals("")) {
-					ccBox.setText(s);
-				}
-				else {
-					ccBox.setText(ccBox.getText() + ", " + s);
-				}
-			}
-			}
-		  });
-    
-		//Fail-safe
-		else {
-		  JOptionPane.showMessageDialog(this, "An unknown error has occurred.");
+	  //This code is executed when the frame is closed and a value for s is
+	  //returned.
+	  public void onData(String s){
+	    if(s != null) {
+	      if (toBox.getText().equals("")) {
+		toBox.setText(s);
+	      }
+		    
+	      else {
+		if (ccBox.getText().equals("")) {
+		  ccBox.setText(s);
 		}
+		      
+		else {
+		  ccBox.setText(ccBox.getText() + ", " + s);
+	      }
+	    }
+	  }
 	}
+      });
+    }
+    
+    //Fail-safe
+    else {
+      JOptionPane.showMessageDialog(this, "An unknown error has occurred.");
+    }
   }
   
   
