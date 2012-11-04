@@ -94,10 +94,12 @@ import java.util.Arrays;
 				label[0].setText("Name:");
 				label[1].setText("Email:");
 				
+				// Layout for the button and scrollPane panels
 				panel[1].setLayout(new BorderLayout());
 				panel[1].add(panel[2], BorderLayout.NORTH);
 				panel[1].add(panel[3], BorderLayout.CENTER);
 				
+				// Layout for the Add, Delete, and Save buttons
 				panel[2].setLayout(new FlowLayout());
 				panel[2].add(button[0]);
 				panel[2].add(button[1]);

@@ -58,7 +58,7 @@ public class EmailSender extends JFrame implements ActionListener {
     
     from = new JLabel("From:");
     subject = new JLabel("Subject:");
-    message = new JLabel("Message:");
+    message = new JLabel(" Message:");
     cc = new JLabel("CC:");
     
     fromBox = new JTextField(300);
@@ -74,41 +74,33 @@ public class EmailSender extends JFrame implements ActionListener {
     
     
     //Create panel containing to area
-    JPanel toArea = new JPanel(new GridLayout(2,1));
-    toArea.add(to);
-    toArea.add(toBox);
-    
-    
-    //Create panel containing from area
-    JPanel fromArea = new JPanel(new GridLayout(2, 1));
-    fromArea.add(from);
-    fromArea.add(fromBox);
-    
-    
-    //Create panel containing subject area
-    JPanel subjectArea = new JPanel(new GridLayout(2, 1));
-    subjectArea.add(subject);
-    subjectArea.add(subjectBox);
-    
-    //Create panel containing cc area
-    JPanel ccArea = new JPanel(new GridLayout(2, 1));
-    ccArea.add(cc);
-    ccArea.add(ccBox);
-    
-    
-    //Add the toArea,fromArea, and subjectArea panels into one panel
-    JPanel inputs = new JPanel(new GridLayout(4, 1));
-    inputs.add(fromArea);
-    inputs.add(toArea);
-    inputs.add(ccArea);
-    inputs.add(subjectArea);
-    
+    //JPanel toArea = new JPanel(new GridLayout(2,1));
+	JPanel container = new JPanel(new BorderLayout());
+	JPanel leftPanel = new JPanel();
+	JPanel rightPanel = new JPanel();
+	
+	leftPanel.setPreferredSize(new Dimension(60, 25));
+	
+	leftPanel.add(from);
+    leftPanel.add(to);
+	leftPanel.add(cc);
+	leftPanel.add(subject);
+	
+	rightPanel.add(fromBox);
+	rightPanel.add(toBox);
+    rightPanel.add(ccBox);
+    rightPanel.add(subjectBox);
+	
+	container.add(leftPanel, BorderLayout.WEST);
+	container.add(rightPanel, BorderLayout.CENTER);    
     
     //Make the Message area
-    JPanel messageArea = new JPanel(new GridLayout(2, 1));
-    messageArea.add(message);
+    JPanel messageArea = new JPanel(new BorderLayout());
+	JPanel labelPanel = new JPanel(new BorderLayout());
+    labelPanel.add(message, BorderLayout.WEST);
     scroll = new JScrollPane(messageBox);
-    messageArea.add(scroll);
+	messageArea.add(labelPanel, BorderLayout.NORTH);
+    messageArea.add(scroll, BorderLayout.CENTER);
     
     //Set up other buttons
     JPanel buttonArea = new JPanel();
@@ -121,7 +113,7 @@ public class EmailSender extends JFrame implements ActionListener {
     
     
     //Add everything
-    add(inputs);
+    add(container);
     add(messageArea);
     add(buttonArea);
   }
