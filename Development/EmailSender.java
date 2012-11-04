@@ -68,7 +68,7 @@ public class EmailSender extends JFrame implements ActionListener {
     
     messageBox = new JTextArea(300, 200);
     
-    scroll = new JScrollPane();
+    
 
     username = ""; password = "";
     
@@ -107,8 +107,8 @@ public class EmailSender extends JFrame implements ActionListener {
     //Make the Message area
     JPanel messageArea = new JPanel(new GridLayout(2, 1));
     messageArea.add(message);
-    scroll.add(messageBox);
-    messageArea.add(messageBox);
+    scroll = new JScrollPane(messageBox);
+    messageArea.add(scroll);
     
     //Set up other buttons
     JPanel buttonArea = new JPanel();
@@ -117,13 +117,14 @@ public class EmailSender extends JFrame implements ActionListener {
     
     
     //Set main panel properties
-    setLayout(new GridLayout(3, 1));
+    setLayout(new GridLayout(2, 2)); //Was 3, 1
     
     
     //Add everything
-	add(scroll);
     add(inputs);
     add(messageArea);
+    JPanel blank = new JPanel();
+    add(blank);
     add(buttonArea);
   }
   
@@ -197,7 +198,6 @@ public class EmailSender extends JFrame implements ActionListener {
       });
       
       //Window settings
-      credWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       credWindow.setTitle("Enter Credentials");
       credWindow.setPreferredSize(new Dimension(300, 200));
       credWindow.pack();
@@ -223,10 +223,19 @@ public class EmailSender extends JFrame implements ActionListener {
 	//returned.
 	public void onData(String s){
 	  if(s != null) {
-		if (toBox.getText().equals(""))
-	      toBox.setText(s);
-		else
-		  toBox.setText(toBox.getText() + ", " + s);
+	    if (toBox.getText().equals("")) {
+              toBox.setText(s);
+	    }
+	    
+	    else {
+	      if (ccBox.getText().equals("")) {
+                ccBox.setText(s);
+	      }
+	      
+	      else {
+		ccBox.setText(toBox.getText() + ", " + s);
+	      }
+	    }
 	  }
 	}
       });
