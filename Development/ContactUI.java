@@ -2,9 +2,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
 import javax.swing.*;
+import javax.swing.event.*;
 import java.util.Arrays;
         
-        public class ContactUI extends JPanel implements ActionListener
+        public class ContactUI extends JFrame implements ActionListener
         {
             // Declare all of the variables
 			private JPanel[] panel;
@@ -28,7 +29,7 @@ import java.util.Arrays;
             {
 				listener = l;
 				contactList = new ContactList();
-				panel = new JPanel[6];
+				panel = new JPanel[7];
 				listModel = new DefaultListModel();
 				
 				List<String> data = contactList.getContacts();
@@ -43,6 +44,12 @@ import java.util.Arrays;
 					listview = new JList(listModel);
 				}
 				
+				else
+				{
+					listview = new JList(listModel);
+				}
+				
+				listview.addListSelectionListener(lsl);
 				scrollPane = new JScrollPane(listview);
 				
 				scrollPane.setPreferredSize(new Dimension(300, 200));
@@ -87,34 +94,39 @@ import java.util.Arrays;
 				label[0].setText("Name:");
 				label[1].setText("Email:");
 				
-				panel[0].setLayout(new BorderLayout());
-				panel[0].add(panel[1], BorderLayout.NORTH);
-				panel[0].add(panel[2], BorderLayout.CENTER);
+				panel[1].setLayout(new BorderLayout());
+				panel[1].add(panel[2], BorderLayout.NORTH);
+				panel[1].add(panel[3], BorderLayout.CENTER);
 				
-				panel[1].setLayout(new FlowLayout());
-				panel[1].add(button[0]);
-				panel[1].add(button[1]);
-				panel[1].add(button[2]);
-				
-				panel[2].setLayout(new BorderLayout());
-				//contactListPanel.add(panel[1], BorderLayout.NORTH);
-				panel[2].add(scrollPane, BorderLayout.CENTER);
-				
-				panel[4].setLayout(new GridLayout(6, 1));
-				panel[4].add(label[0]);
-				panel[4].add(userInput[0]);
-				panel[4].add(label[1]);
-				panel[4].add(userInput[1]);
+				panel[2].setLayout(new FlowLayout());
+				panel[2].add(button[0]);
+				panel[2].add(button[1]);
+				panel[2].add(button[2]);
 				
 				panel[3].setLayout(new BorderLayout());
-				panel[3].add(panel[4], BorderLayout.NORTH);
-				panel[3].add(panel[5], BorderLayout.CENTER);
+				//contactListPanel.add(panel[1], BorderLayout.NORTH);
+				panel[3].add(scrollPane, BorderLayout.CENTER);
 				
-				panel[5].add(button[3]);
-				panel[5].add(button[4]);
+				panel[5].setLayout(new GridLayout(6, 1));
+				panel[5].add(label[0]);
+				panel[5].add(userInput[0]);
+				panel[5].add(label[1]);
+				panel[5].add(userInput[1]);
 				
+				panel[4].setLayout(new BorderLayout());
+				panel[4].add(panel[5], BorderLayout.NORTH);
+				panel[4].add(panel[6], BorderLayout.CENTER);
+				
+				panel[6].add(button[3]);
+				panel[6].add(button[4]);
+				
+				panel[0].add(panel[1]);
+				panel[0].add(panel[4]);
 				add(panel[0]);
-				add(panel[3]);
+				setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				setTitle("Contact List");
+				pack();
+				setVisible(true);
             }
 			
 			public void actionPerformed(ActionEvent event)
@@ -134,34 +146,47 @@ import java.util.Arrays;
 						contact = new Contact(contactArr[0], contactArr[1], contactArr[2], userInput[1].getText());
 					}
 					
-					contactList.add(contact);
-					listModel.addElement(userInput[0].getText() + " " + userInput[1].getText());
-					
-					// Reset the fields
-					userInput[0].setText("");
-					userInput[1].setText("");
+					Boolean addScuessful = contactList.add(contact);
+					{
+						listModel.addElement(userInput[0].getText() + " " + userInput[1].getText());
+						
+						// Reset the fields
+						userInput[0].setText("");
+						userInput[1].setText("");
+					}
 				}
 				
 				// Delete Button
 				else if (event.getSource() == button[1])
 				{
 					String delContact = String.valueOf(listview.getSelectedValue());
-					contactList.remove(delContact);
-					listModel.removeElement(listview.getSelectedValue());
+					Boolean removeSuccessful = contactList.remove(delContact);
 					
-					// Reset the fields
-					userInput[0].setText("");
-					userInput[1].setText("");
+					if (removeSuccessful)
+					{
+						listModel.removeElement(listview.getSelectedValue());
+						
+						// Reset the fields
+						userInput[0].setText("");
+						userInput[1].setText("");
+					}
 				}
 				
 				// Save Button
 				else if (event.getSource() == button[2])
 				{
-					contactList.modify(userInput[0].getText(), userInput[1].getText());
+					String oldInfo = String.valueOf(listview.getSelectedValue());
+					String changedInfo = userInput[0].getText() + " " + userInput[1].getText();
+					Boolean saveSuccessful = contactList.modify(oldInfo, changedInfo);
 					
-					// Reset the fields
-					userInput[0].setText("");
-					userInput[1].setText("");
+					if (saveSuccessful)
+					{
+						listModel.removeElement(listview.getSelectedValue());
+						listModel.addElement(userInput[0].getText() + " " + userInput[1].getText());
+						// Reset the fields
+						userInput[0].setText("");
+						userInput[1].setText("");
+					}
 				}
 				
 				// OK Button
@@ -169,21 +194,41 @@ import java.util.Arrays;
 				{
 					recipients = String.valueOf(listview.getSelectedValue());
 					listener.onData(recipients);
-					System.out.println(recipients);
+					
+					dispose();
 					
 				}
 				
 				// Cancel Button
 				else if (event.getSource() == button[4])
 				{
-					//dispose();
+					dispose();
 				}
 			}
 			
-			public static void main(String[] args)
+			private ListSelectionListener lsl = new ListSelectionListener()
 			{
-				JFrame window = new JFrame();
-				
+				@Override
+				public void valueChanged(ListSelectionEvent evt)
+				{
+					String[] selectedContact = String.valueOf(listview.getSelectedValue()).split("\\s+");
+			
+					if (selectedContact.length == 3)
+					{
+						userInput[0].setText(selectedContact[0] + " " + selectedContact[1]);
+						userInput[1].setText(selectedContact[2]);
+					}
+					
+					if (selectedContact.length == 4)
+					{
+						userInput[0].setText(selectedContact[0] + " " + selectedContact[1] + " " + selectedContact[2]);
+						userInput[1].setText(selectedContact[3]);
+					}
+				}
+			};
+			
+			public static void main(String[] args)
+			{			
 				ContactUI dialog = new ContactUI(new ContactUI.OnContactListener()
 				{
 					public void onData(String s)
@@ -191,12 +236,5 @@ import java.util.Arrays;
 
 					}
 				});
-				 
-				
-				window.add(dialog);
-				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				window.setTitle("Contact List");
-				window.pack();
-				window.setVisible(true);
 			}
         }

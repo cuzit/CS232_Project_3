@@ -17,14 +17,6 @@ public class ContactList
 			{
 				contacts.createNewFile();
 			}
-			
-			scan = new Scanner(new File("contacts.txt"));
-			writer = new FileWriter(new File("contacts.txt"), true);
-		}
-		
-		catch (FileNotFoundException fnfException)
-		{
-			System.out.println("The file contacts.txt could not be found.");
 		}
 		
 		catch (IOException ioe)
@@ -35,6 +27,18 @@ public class ContactList
 	
 	public Boolean add(Contact contact)
 	{
+		// Reinstantiate the FileWriter
+		try
+		{
+			writer = new FileWriter(new File("contacts.txt"), true);
+		}
+		
+		// FileWriter throws an IOException if an error occurs.
+		catch (IOException ioe)
+		{
+			System.out.println("IOException: The file could not be created.");
+		}
+	
 		try
 		{
 			writer.write(contact.getFullName() + " " + contact.getEmail() + "\r\n");
@@ -55,27 +59,43 @@ public class ContactList
 	public Boolean modify(String oldInfo, String changedInfo)
 	{		
 		String output = "";
+		String temp = "";
+		
+		// Reinstantiate the Scanner and the FileWriter
+		try
+		{
+			scan = new Scanner(new File("contacts.txt"));
+			
+		}
+		
+		// When using Scanner to read from a file you have to catch the FileNotFoundException
+		// in case the file does not exist.
+		catch (FileNotFoundException fnfException)
+		{
+			System.out.println("The file contacts.txt could not be found.");
+		}
 		
 		while (scan.hasNextLine())
 		{
-			
-			String temp = scan.nextLine();
-			if (temp == oldInfo)
+			temp = scan.nextLine();
+			if (temp.equals(oldInfo))
 			{
-				output += changedInfo + "\n";
+				output += (changedInfo + "\r\n");
 			}
 			
 			else
 			{
-				output += temp + "\n";
+				output += (temp + "\n");
 			}
 		}
 		
-		// Since writer was instantiated in the Constructor
-		// it needs to be closed
 		try
 		{
+			writer = new FileWriter(new File("contacts.txt"));
 			writer.write(output);
+			System.out.println(output);
+			
+			// Since writer was instantiated it needs to be closed
 			writer.close();
 		}
 		
@@ -92,42 +112,68 @@ public class ContactList
 	public Boolean remove(String contact)
 	{
 		String output = "";
+		String temp = "";
+
+		// Reinstantiate the Scanner and the FileWriter
+		try
+		{
+			scan = new Scanner(new File("contacts.txt"));
+		}
+		
+		// When using Scanner to read from a file you have to catch the FileNotFoundException
+		// in case the file does not exist.
+		catch (FileNotFoundException fnfException)
+		{
+			System.out.println("The file contacts.txt could not be found.");
+		}
+		
 		while(scan.hasNextLine())
 		{
-			String temp = scan.nextLine();
-			System.out.println(temp);
-			if (temp == contact)
+			temp = scan.nextLine();
+
+			if (!temp.equals(contact))
 			{
-				System.out.println(contact);
-				output += "";
-				
+				output += temp;
 			}
 			
 			else
 			{
-				output += temp;
-				System.out.println(temp);
+				output += "";
+				
 			}
 		}
 		
 		try
 		{
+			writer = new FileWriter(new File("contacts.txt"));
 			writer.write(output);
 			writer.close();
+			return true;
 		}
 		
 		catch (IOException ioe)
 		{
-			JOptionPane.showMessageDialog(null, "The contact could not be removed.\nPlease try again.", "Error", 0);
+			JOptionPane.showMessageDialog(null, "The contact could not be removed.\nPlease try again.\n" + ioe.getMessage(), "Error", 0);
 			System.out.println("The contact could not be removed. Please try again.");
 			return false;
 		}
-		
-		return true;
 	}
 	
 	public List<String> getContacts()
 	{
+		// Reinstantiate the Scanner and the FileWriter
+		try
+		{
+			scan = new Scanner(new File("contacts.txt"));
+		}
+		
+		// When using Scanner to read from a file you have to catch the FileNotFoundException
+		// in case the file does not exist.
+		catch (FileNotFoundException fnfException)
+		{
+			System.out.println("The file contacts.txt could not be found.");
+		}
+	
 		List<String> data = new ArrayList<String>();
 		while (scan.hasNextLine())
 		{
