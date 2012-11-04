@@ -216,7 +216,6 @@ public class EmailSender extends JFrame implements ActionListener {
     
     //If to is pressed
     else if (event.getSource() == to) {
-      final JFrame contactWindow = new JFrame();
       ContactUI contactPanel = new ContactUI(new ContactUI.OnContactListener()
       {
 
@@ -224,23 +223,13 @@ public class EmailSender extends JFrame implements ActionListener {
 	//returned.
 	public void onData(String s){
 	  if(s != null) {
-	    if(s == "Cancel was pressed") {
-	      contactWindow.dispose();
-	    }
-	    else {
+		if (toBox.getText().equals(""))
 	      toBox.setText(s);
-	      contactWindow.dispose();
-	    }
+		else
+		  toBox.setText(toBox.getText() + ", " + s);
 	  }
 	}
       });
-      
-      //Window settings
-      contactWindow.add(contactPanel);
-      contactWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      contactWindow.setTitle("Contact List");
-      contactWindow.pack();
-      contactWindow.setVisible(true);
     }
     
     //Fail-safe

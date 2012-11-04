@@ -123,7 +123,7 @@ import java.util.Arrays;
 				panel[0].add(panel[1]);
 				panel[0].add(panel[4]);
 				add(panel[0]);
-				setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 				setTitle("Contact List");
 				pack();
 				setVisible(true);
@@ -193,7 +193,8 @@ import java.util.Arrays;
 				else if (event.getSource() == button[3])
 				{
 					recipients = String.valueOf(listview.getSelectedValue());
-					listener.onData(recipients);
+					String[] selectedContact = recipients.split("\\s+");
+					listener.onData(selectedContact[selectedContact.length - 1]);
 					
 					dispose();
 					
