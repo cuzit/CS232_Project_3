@@ -70,8 +70,7 @@ public class Contact {
     this.name[0] = first;
     this.name[1] = "";
     this.name[2] = last;
-    this.name[3] = this.name[0] + " " + this.name[1] + " "
-		   + this.name[2];
+    this.name[3] = this.name[0] + " " + this.name[2];
     this.email = email;
   }
   

@@ -89,14 +89,16 @@ public class ContactList
 		return true;
 	}
 	
-	public Boolean remove(String name, String email)
+	public Boolean remove(String contact)
 	{
 		String output = "";
 		while(scan.hasNextLine())
 		{
 			String temp = scan.nextLine();
-			if (temp == name + " " + email)
+			System.out.println(temp);
+			if (temp == contact)
 			{
+				System.out.println(contact);
 				output += "";
 				
 			}
@@ -104,6 +106,7 @@ public class ContactList
 			else
 			{
 				output += temp;
+				System.out.println(temp);
 			}
 		}
 		

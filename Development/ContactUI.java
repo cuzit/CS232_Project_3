@@ -124,14 +124,16 @@ import java.util.Arrays;
 				{
 					String[] contactArr = new String[3];
 					contactArr = userInput[0].getText().split("\\s+");
-					System.out.println(Arrays.toString(contactArr));
-					if(contactArr.length == 2) {
-					  contact = new Contact(contactArr[0], contactArr[1], userInput[1].getText());
+					
+					if(contactArr.length == 2)
+					{
+						contact = new Contact(contactArr[0], contactArr[1], userInput[1].getText());
 					}
-					else {
-					  contact = new Contact(contactArr[0], contactArr[1], contactArr[2], userInput[1].getText());
+					else
+					{
+						contact = new Contact(contactArr[0], contactArr[1], contactArr[2], userInput[1].getText());
 					}
-					System.out.println(contact.toString());
+					
 					contactList.add(contact);
 					listModel.addElement(userInput[0].getText() + " " + userInput[1].getText());
 					
@@ -143,7 +145,9 @@ import java.util.Arrays;
 				// Delete Button
 				else if (event.getSource() == button[1])
 				{
-					contactList.remove(userInput[0].getText(), userInput[1].getText());
+					String delContact = String.valueOf(listview.getSelectedValue());
+					contactList.remove(delContact);
+					listModel.removeElement(listview.getSelectedValue());
 					
 					// Reset the fields
 					userInput[0].setText("");
