@@ -107,8 +107,8 @@ public class EmailSender extends JFrame implements ActionListener {
     //Make the Message area
     JPanel messageArea = new JPanel(new GridLayout(2, 1));
     messageArea.add(message);
+    scroll.add(messageBox);
     messageArea.add(messageBox);
-    scroll.add(messageArea);
     
     //Set up other buttons
     JPanel buttonArea = new JPanel();
