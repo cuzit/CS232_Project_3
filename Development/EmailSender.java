@@ -117,14 +117,12 @@ public class EmailSender extends JFrame implements ActionListener {
     
     
     //Set main panel properties
-    setLayout(new GridLayout(2, 2)); //Was 3, 1
+    setLayout(new GridLayout(3, 1));
     
     
     //Add everything
     add(inputs);
     add(messageArea);
-    JPanel blank = new JPanel();
-    add(blank);
     add(buttonArea);
   }
   
