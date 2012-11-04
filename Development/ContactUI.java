@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.List;
 import javax.swing.*;
+import java.util.Arrays;
         
         public class ContactUI extends JPanel implements ActionListener
         {
@@ -121,8 +122,15 @@ import javax.swing.*;
 				// Add button
 				if (event.getSource() == button[0])
 				{
-					String[] contactArr = userInput[0].getText().split("\\s+");
-					contact = new Contact(contactArr, userInput[1].getText());
+					String[] contactArr = new String[3];
+					contactArr = userInput[0].getText().split("\\s+");
+					System.out.println(Arrays.toString(contactArr));
+					if(contactArr.length == 2) {
+					  contact = new Contact(contactArr[0], contactArr[1], userInput[1].getText());
+					}
+					else {
+					  contact = new Contact(contactArr[0], contactArr[1], contactArr[2], userInput[1].getText());
+					}
 					System.out.println(contact.toString());
 					contactList.add(contact);
 					listModel.addElement(userInput[0].getText() + " " + userInput[1].getText());
