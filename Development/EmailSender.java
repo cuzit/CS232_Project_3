@@ -105,11 +105,20 @@ public class EmailSender extends JFrame implements ActionListener {
     }
     
     else if (event.getSource() == to) {
-      ContactUI contactWindow = new ContactUI();
-      contactWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      contactWindow.setTitle("Contact List");
-      contactWindow.pack();
-      contactWindow.setVisible(true);
+		JFrame contactWindow = new JFrame();
+		ContactUI contactPanel = new ContactUI(new ContactUI.OnContactListener()
+		{
+			public void onData(String s)
+			{
+
+			}
+		});
+		 
+		contactWindow.add(contactPanel);
+		contactWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		contactWindow.setTitle("Contact List");
+		contactWindow.pack();
+		contactWindow.setVisible(true);
     }
     
     else {
