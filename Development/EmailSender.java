@@ -20,11 +20,13 @@ public class EmailSender extends JFrame implements ActionListener {
   private JLabel from;
   private JLabel subject;
   private JLabel message;
+  private JLabel cc;
   
   //JTextFields
   private JTextField subjectBox;
   private JTextField fromBox;
   private JTextField toBox;
+  private JTextField ccBox;
   
   //JTextAreas
   private JTextArea messageBox;
@@ -50,10 +52,12 @@ public class EmailSender extends JFrame implements ActionListener {
     from = new JLabel("From:");
     subject = new JLabel("Subject:");
     message = new JLabel("Message:");
+    cc = new JLabel("CC:");
     
     fromBox = new JTextField(300);
     toBox = new JTextField(300);
     subjectBox = new JTextField(300);
+    ccBox = new JTextField(300);
     
     messageBox = new JTextArea(300, 200);
 
@@ -77,11 +81,17 @@ public class EmailSender extends JFrame implements ActionListener {
     subjectArea.add(subject);
     subjectArea.add(subjectBox);
     
+    //Create panel containing cc area
+    JPanel ccArea = new JPanel(new GridLayout(2, 1));
+    ccArea.add(cc);
+    ccArea.add(ccBox);
+    
     
     //Add the toArea,fromArea, and subjectArea panels into one panel
-    JPanel inputs = new JPanel(new GridLayout(3, 1));
-    inputs.add(toArea);
+    JPanel inputs = new JPanel(new GridLayout(4, 1));
     inputs.add(fromArea);
+    inputs.add(toArea);
+    inputs.add(ccArea);
     inputs.add(subjectArea);
     
     
@@ -113,7 +123,8 @@ public class EmailSender extends JFrame implements ActionListener {
   public void actionPerformed(ActionEvent event) {
     //If send is pressed
     if (event.getSource() == send) {
-      Credentials credWindow = new Credentials(new Credentials.OnContactListener() {
+      Credentials credWindow = new Credentials(fromBox.getText(),
+			       new Credentials.OnContactListener() {
 	//This code is executed when the frame is closed and a value for s is
 	//returned.
 	public void onData(String s) {
@@ -121,7 +132,13 @@ public class EmailSender extends JFrame implements ActionListener {
 	  String[] creds = s.split(" ");
 	  System.out.println("Username: " + creds[0]);
 	  System.out.println("Password: " + creds[1]);
-	  
+	  GmailSender gmail = new GmailSender(creds[0], creds[1]);
+	  gmail.sendMail(toBox.getText(), subjectBox.getText(), messageBox.getText());
+	  JOptionPane.showMessageDialog(null, "Email has been sent!");
+	  toBox.setText("");
+	  fromBox.setText("");
+	  subjectBox.setText("");
+	  messageBox.setText("");
 	}
       });
       credWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

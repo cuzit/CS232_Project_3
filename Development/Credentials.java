@@ -32,7 +32,7 @@ public class Credentials extends JFrame implements ActionListener {
   /************
   *Constructor*
   *************/
-  public Credentials(OnContactListener l) {
+  public Credentials(String defaultUsername, OnContactListener l) {
     //Initialize components
     listener = l;
     
@@ -47,7 +47,12 @@ public class Credentials extends JFrame implements ActionListener {
     pass = new JLabel("Password:");
     instructions = new JLabel("Please enter your GMail credentials:");
     
-    userBox = new JTextField(20);
+    if (defaultUsername != null && defaultUsername != "") {
+      userBox = new JTextField(defaultUsername, 20);
+    }
+    else {
+      userBox = new JTextField(20);
+    }
     passBox = new JTextField(20);
     
     
@@ -115,7 +120,6 @@ public class Credentials extends JFrame implements ActionListener {
 	username = userBox.getText();
 	password = passBox.getText();
 	creds = username + " " + password;
-	complete = true;
 	listener.onData(creds);
 	dispose();
       }
