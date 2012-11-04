@@ -37,7 +37,7 @@ public class ContactList
 	{
 		try
 		{
-			writer.write(name + " " + email + "\n");
+			writer.write(name + " " + email + "\r\n");
 			writer.close();
 			
 			return true;

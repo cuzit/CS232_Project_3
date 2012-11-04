@@ -12,14 +12,20 @@ import java.util.Scanner;
 			private JButton[] button;
 			private JLabel[] label;
 			private JTextField[] userInput;
-            private String name;
-            private String email;
+			private String recipients;
 			private DefaultListModel listModel;
 			private Scanner scan;
 			private ContactList contactList;
-            
-            public ContactUI()
+			private OnContactListener listener;
+			
+            public interface OnContactListener
+			{
+				public void onData(String s);
+			}
+			
+            public ContactUI(OnContactListener l)
             {
+				listener = l;
 				contactList = new ContactList();
 				panel = new JPanel[6];
 				scrollPane = new JScrollPane();
@@ -65,9 +71,9 @@ import java.util.Scanner;
 				}
 				
 				// Instantiate all of the JTextFields
-				for (int l = 0; l < userInput.length; l++)
+				for (int m = 0; m < userInput.length; m++)
 				{
-					userInput[l] = new JTextField(20);
+					userInput[m] = new JTextField(20);
 				}
               
 				// Set the text for all of the JButtons
@@ -139,7 +145,7 @@ import java.util.Scanner;
 				// Save Button
 				else if (event.getSource() == button[2])
 				{
-					
+					contactList.modify(userInput[0].getText(), userInput[1].getText());
 					
 					// Reset the fields
 					userInput[0].setText("");
@@ -149,21 +155,33 @@ import java.util.Scanner;
 				// OK Button
 				else if (event.getSource() == button[3])
 				{
-				
+					recipients = String.valueOf(listview.getSelectedValue());
+					listener.onData(recipients);
+					System.out.println(recipients);
+					
 				}
 				
 				// Cancel Button
 				else if (event.getSource() == button[4])
 				{
-				
+					//dispose();
 				}
 			}
 			
 			public static void main(String[] args)
 			{
 				JFrame window = new JFrame();
-				ContactUI cl = new ContactUI();
-				window.add(cl);
+				
+				ContactUI dialog = new ContactUI(new ContactUI.OnContactListener()
+				{
+					public void onData(String s)
+					{
+
+					}
+				});
+				 
+				
+				window.add(dialog);
 				window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				window.setTitle("Contact List");
 				window.pack();
