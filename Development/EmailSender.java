@@ -218,11 +218,16 @@ public class EmailSender extends JFrame implements ActionListener {
       JFrame contactWindow = new JFrame();
       ContactUI contactPanel = new ContactUI(new ContactUI.OnContactListener()
       {
+<<<<<<< HEAD
+		public void onData(String s){
+		}
+=======
 	//This code is executed when the frame is closed and a value for s is
 	//returned.
 	public void onData(String s){
 	  toBox.setText(s);
 	}
+>>>>>>> 07bc1dbf457dc20297791495da7b55e7b508a146
       });
       
       //Window settings

@@ -33,11 +33,11 @@ public class ContactList
 		}
 	}
 	
-	public Boolean add(String name, String email)
+	public Boolean add(Contact contact)
 	{
 		try
 		{
-			writer.write(name + " " + email + "\r\n");
+			writer.write(contact.getFullName() + " " + contact.getEmail() + "\r\n");
 			writer.close();
 			
 			return true;
@@ -123,14 +123,13 @@ public class ContactList
 		return true;
 	}
 	
-	public String toString()
+	public List<String> getContacts()
 	{
-		String list = "";
+		List<String> data = new ArrayList<String>();
 		while (scan.hasNextLine())
 		{
-			list += scan.nextLine();
+			data.add(scan.nextLine());
 		}
-		
-		return list;
+		return data;
 	}
 }
