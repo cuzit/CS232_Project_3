@@ -234,13 +234,14 @@ public class EmailSender extends JFrame implements ActionListener {
 					ccBox.setText(ccBox.getText() + ", " + s);
 				}
 			}
+			}
 		  });
-		}
     
-    //Fail-safe
-    else {
-      JOptionPane.showMessageDialog(this, "An unknown error has occurred.");
-    }
+		//Fail-safe
+		else {
+		  JOptionPane.showMessageDialog(this, "An unknown error has occurred.");
+		}
+	}
   }
   
   
